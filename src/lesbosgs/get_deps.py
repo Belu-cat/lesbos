@@ -47,9 +47,11 @@ def get_feature(name: str, features: list):
 
 def install_package(dep: dict [str, str], sourcefmt: str, direc: pathlib.Path):
     package_meta, project_meta, package_zip = get_package(dep, sourcefmt)
+    print(f"Getting package: {package_meta["name"]} v{package_meta["version"]}")
     included_files = get_feature("core", package_meta["features"])
-    for feat in dep["features"]:
-        included_files += get_feature(feat, package_meta["features"])
+    if dep.get("features"):
+        for feat in dep["features"]:
+            included_files += get_feature(feat, package_meta["features"])
     packdir = direc / package_meta["name"] / package_meta["version"]
     included_files = list(set(included_files))
     os.makedirs(packdir, exist_ok=True)
@@ -60,6 +62,7 @@ def install_package(dep: dict [str, str], sourcefmt: str, direc: pathlib.Path):
             os.makedirs(os.path.dirname(packdir / x), exist_ok=True)
             f.write(package_zip.read(x))
     if project_meta["deps"]:
+        print("Recursively getting inferred dependencies...")
         install_packages(project_meta["deps"], sourcefmt, direc)
 
 def install_packages(deps: list, sourcefmt: str, direc: pathlib.Path):

@@ -42,7 +42,7 @@ def new(name: pathlib.Path, islib: bool, forceremake: bool):
     if islib:
         package_toml = {"name": str(name),
                         "version": "0.1.0",
-                        "features": [{"name": "core", "files": ["main.gs"]}]
+                        "features": [{"name": "core", "files": ["main.gs"]},]
         }
         _create_file(name / "package.toml", toml.dumps(package_toml), forceremake)
         print("Created package.toml")
@@ -109,7 +109,7 @@ def lock():
         rmtree("lesbos/deps/")
     with open("lesbos.toml", "rb") as f:
         project_meta = tomllib.load(f)
-    get_deps.install_packages(project_meta["deps"], sourcefmt="https://gitlab.com/goboscript-lesbos/database/-/raw/main/{}", direc=pathlib.Path("./"))
+    get_deps.install_packages(project_meta["deps"], sourcefmt="https://gitlab.com/goboscript-lesbos/database/-/raw/main/{}", direc=pathlib.Path("./lesbos/deps/"))
 
 def _starts_with_one_of(item: str, lst: list):
     for x in lst:
