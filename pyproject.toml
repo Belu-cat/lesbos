@@ -1,0 +1,7 @@
+[build-system]
+requires = ["hatchling >= 1.27"]
+build-backend = "hatchling.build"
+
+[project]
+name = "lesbosgs"
+version = "2025.0.0"
