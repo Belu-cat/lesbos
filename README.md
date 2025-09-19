@@ -1,0 +1,2 @@
+# lesbos
+goboscript package manager
