@@ -14,6 +14,7 @@ def main():
     parser.add_argument("--force-remake", action="store_true", help="Forcefully remake any files/folder if they already exist")
     parser.add_argument("-v", "--version", type=str, help="The version of the library specified")
     parser.add_argument("--no-lock", action="store_true", help="Disables reinstalling packages")
+    parser.add_argument("--features", type=str, help="Space-seperated list of package features")
     args = parser.parse_args()
     if args.source and args.name:
         parser.error("Cannot have both --source and --name")
@@ -24,6 +25,10 @@ def main():
     elif args.subcommand == "add":
         if args.version == None:
             parser.error("Must have --version if subcommand is `add`")
+        if args.features:
+            feat = args.features.split(" ")
+        else:
+            feat = None
         if args.source:
             issource = True
             dep = args.source
@@ -32,7 +37,7 @@ def main():
             dep = args.name
         else:
             parser.error("Must have either `--source` or `--name` if subcommand is `add`")
-        cmds.add_dep(dep, args.version, issource)
+        cmds.add_dep(dep, args.version, issource, feat)
     elif args.subcommand == "build":
         cmds.build(nolock=args.no_lock)
     elif args.subcommand == "lock":

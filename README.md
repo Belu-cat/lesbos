@@ -44,6 +44,9 @@ Usage:
 python -m lesbosgs add [--source (-s)/--name (-n)] [package url/package name] [-v/--version] [version]
 ```
 
+Can take:
+- ``--features`` (space-seperated list of features to add)
+
 ### lock
 Installs all dependencies.
 

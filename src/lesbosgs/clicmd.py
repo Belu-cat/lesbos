@@ -80,7 +80,7 @@ def _check_if_project(direc: pathlib.Path):
 def _check_if_library(direc: pathlib.Path):
     return os.path.isfile(direc / "package.toml") and _check_if_project(direc)
 
-def add_dep(dep: str, ver: str, issource: bool):
+def add_dep(dep: str, ver: str, issource: bool, features: list | None = None):
     if not _check_if_project(pathlib.Path("./")):
         raise Exception("Could not find either `lesbos.toml` or `goboscript.toml` in folder")
     with open("lesbos.toml", "rb") as f:
@@ -91,6 +91,8 @@ def add_dep(dep: str, ver: str, issource: bool):
     else:
         packdata["name"] = dep
     packdata["version"] = ver
+    if features:
+        packdata["features"] = features
     lesbos_config["deps"].append(packdata)
     with open("lesbos.toml", "w") as f:
         toml.dump(lesbos_config, f)
