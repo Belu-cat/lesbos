@@ -4,7 +4,7 @@ goboscript package manager
 ## Installation
 Clone the repo:
 ```bash
-git clone https://github.com/Belu-cat/lesbos
+git clone https://gitlab.com/goboscript-lesbos/lesbos
 cd lesbos
 ```
 Then, create and activate virtual env:
