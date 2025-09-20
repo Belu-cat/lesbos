@@ -48,7 +48,11 @@ def get_feature(name: str, features: list):
 def install_package(dep: dict [str, str], sourcefmt: str, direc: pathlib.Path):
     package_meta, project_meta, package_zip = get_package(dep, sourcefmt)
     print(f"Getting package: {package_meta["name"]} v{package_meta["version"]}")
-    included_files = get_feature("core", package_meta["features"])
+    try:
+        included_files = get_feature("core", package_meta["features"])
+    except Exception as e:
+        print(e, file=stderr)
+        included_files = []
     if dep.get("features"):
         for feat in dep["features"]:
             included_files += get_feature(feat, package_meta["features"])

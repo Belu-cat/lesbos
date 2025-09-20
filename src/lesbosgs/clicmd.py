@@ -127,19 +127,21 @@ def pack():
         rmtree(packedpath)
     os.mkdir(packedpath)
     package_zip = zipfile.ZipFile(packedpath / "package.zip", 'w', zipfile.ZIP_LZMA)
+    with open("lesbos.toml") as f:
+        lesbos_toml = f.read()
+    with open("package.toml") as f:
+        package_toml = f.read()
     ALLOWED_NAMES = []
     ALLOWED_FULL_NAMES = ["./lesbos.toml", "./package.toml"]
     ALLOWED_PREFIXES = ["./README", "./DOCS/", "./LICENSE"]
+    if tomllib.loads(package_toml).get("allowlist"):
+        ALLOWED_NAMES += tomllib.loads(package_toml).get("allowlist")
     for root, _, files in os.walk(pathlib.Path("./")):
         for file in files:
             full_name = os.path.join(root, file)
             if file.endswith(".gs") or full_name in ALLOWED_FULL_NAMES or file in ALLOWED_NAMES or _starts_with_one_of(full_name, ALLOWED_PREFIXES):
                 package_zip.write(full_name)
-    with open("lesbos.toml") as f:
-        lesbos_toml = f.read()
     with open(packedpath / "lesbos.toml", "x") as f:
         f.write(lesbos_toml)
-    with open("package.toml") as f:
-        package_toml = f.read()
     with open(packedpath / "package.toml", "x") as f:
         f.write(package_toml)
